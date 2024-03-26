@@ -1,0 +1,33 @@
+const Articl = require('../model/ArticlSchema');
+
+const AddArticle = async (req, res) => {
+    try {
+        const { Auteur, Titre, Texte, Lien } = req.body;
+        let photoPath = '';
+        if (req.file) {
+            photoPath = req.file.path;
+        }
+
+        const article = await Articl.create({
+            Auteur, Titre, Texte, Photo: photoPath, Lien
+        });
+
+        res.status(200).json({ article });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const GetArticle =async(req,res)=>{
+    try {
+        const Article=await Articl.find()
+        res.status(200).json({msg:'Articls retrieved successfully ',Articles:Article})
+
+
+    } catch (error) {
+            res.status(500).json({ msg: error });
+
+    }
+}
+module.exports = { AddArticle,GetArticle };
