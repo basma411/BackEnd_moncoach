@@ -6,10 +6,9 @@ const CoachSchema = new mongoose.Schema({
         required: true
     },
     DomainesIntervention: {
-        type:mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Mixed,
         ref: 'Domaine',
     },
-   
     AutreDomaine: {
         type: String,
         required: true
@@ -29,6 +28,9 @@ const CoachSchema = new mongoose.Schema({
     Password: {
         type: String,
         required: true
+    },
+    ConfirmPassword: {
+        type: String,
     },
     Bio: {
         type: String,
