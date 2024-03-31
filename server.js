@@ -16,6 +16,8 @@ app.use('/api',RouterÉvènement)
 const RouterDomaine=require('./router/domaine')
 app.use('/api',RouterDomaine)
 
+const RouterAdmin=require('./router/admin')
+app.use('/api',RouterAdmin)
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

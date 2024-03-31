@@ -11,7 +11,7 @@ const registre = async (req, res) => {
 
     if (!errors.isEmpty()) {
       // S'il y a des erreurs de validation, renvoyer un message d'erreur
-      return res.status(400).json({ error: errors.array() });
+      res.status(400).json({ error: errors.array() });
     } else {
       const {
         NomPrenom,
@@ -34,9 +34,7 @@ const registre = async (req, res) => {
 
       // Vérifier si les mots de passe correspondent
       if (Password !== ConfirmPassword) {
-        return res
-          .status(400)
-          .json({ msg: "Password and confirmation password do not match." });
+        res.status(400).json({ msg: "Password and confirmation password do not match." });
       }
 
       // Initialisation des chemins pour les fichiers
@@ -77,7 +75,7 @@ const registre = async (req, res) => {
       const coachexist = await Coach.findOne({ Email });
 
       if (coachexist) {
-        return res.status(400).json({ msg: "This email already exists." });
+        res.status(400).json({ msg: "This email already exists." });
       } else {
         // Recherche des domaines d'intervention
         const domainesInterventionn = DomainesIntervention.split(",").map(
@@ -94,9 +92,7 @@ const registre = async (req, res) => {
 
         // Vérification si tous les domaines existent
         if (domaines.some((domaine) => !domaine)) {
-          return res
-            .status(400)
-            .json({ msg: "One or more domains not found." });
+          res.status(400).json({ msg: "One or more domains not found." });
         }
 
         // Récupération des noms de domaine
@@ -141,15 +137,13 @@ const registre = async (req, res) => {
         );
 
         // Renvoi de la réponse avec le coach créé et le token
-        return res.status(200).json({ msg: coachcreate, token: token });
+        res.status(200).json({ msg: coachcreate, token: token });
       }
     }
   } catch (error) {
     // Gestion des erreurs lors de l'enregistrement du coach
     console.error(error);
-    return res
-      .status(500)
-      .json({ msg: "An error occurred while registering the coach." });
+    res.status(500).json({ msg: "An error occurred while registering the coach." });
   }
 };
 
@@ -161,13 +155,13 @@ const login = async (req, res) => {
 
     if (!coachExist) {
       // Si l'email n'existe pas dans la base de données
-      return res.status(400).json({ msg: "This email does not exist." });
+      res.status(400).json({ msg: "This email does not exist." });
     } else {
       // Vérification du mot de passe
       const verif = await bcrypt.compare(Password, coachExist.Password);
       if (!verif) {
         // Si le mot de passe est incorrect
-        return res.status(400).json({ msg: "Incorrect password." });
+        res.status(400).json({ msg: "Incorrect password." });
       } else {
         // Génération du token JWT
         const token = await JWT.sign(
@@ -178,13 +172,53 @@ const login = async (req, res) => {
           { expiresIn: "7D" }
         );
         // Renvoi de la réponse avec un message de connexion réussie et le token
-        return res.status(200).json({ msg: "Login successful.", token: token });
+        res.status(200).json({ msg: "Login successful.", token: token ,coachExist:coachExist});
       }
     }
   } catch (error) {
     // Gestion des erreurs lors de la connexion du coach
-    return res.status(500).json({ msg: "An error occurred while logging in." });
+    res.status(500).json({ msg: "An error occurred while logging in." });
+  }
+};
+// Fonction pour obtenir un coach
+const getcoach = async (req, res) => {
+  try {
+    const  Coachid  = req.body.Coachid;
+    const coach = await Coach.findOne({_id :Coachid});
+
+    if (!coach) {
+      res.status(200).json({ msg: "no Coach Found" });
+    } else {
+      res.status(200).json({ msg: "getCoach", coach: coach });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "error get",error:error });
   }
 };
 
-module.exports = { registre, login };
+// Route pour mettre à jour un coach
+const putCoach= async (req, res) => {
+  try {
+      const coachId = req.params.id;
+      const updatedCoachData = req.body; // Les données mises à jour du coach
+      // Mettre à jour le coach avec l'ID spécifié
+      await Coach.findByIdAndUpdate(coachId, updatedCoachData);
+      res.status(200).json({ message: 'Coach updated successfully.' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+const deleteCoach= async (req, res) => {
+  try {
+      const coachId = req.params.id;
+      const deleteCoachData = req.body; // Les données mises à jour du coach
+      // Mettre à jour le coach avec l'ID spécifié
+      await Coach.findByIdAndDelete(coachId, deleteCoachData);
+      res.status(200).json({ message: 'Coach delete successfully.' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+module.exports = { registre, login,getcoach ,putCoach,deleteCoach};

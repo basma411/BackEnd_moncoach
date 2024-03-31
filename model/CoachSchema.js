@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const CoachSchema = new mongoose.Schema({
     NomPrenom: {
         type: String,
@@ -81,6 +80,10 @@ const CoachSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin'
+    }
 });
 
 const Coach = mongoose.model('Coach', CoachSchema);
