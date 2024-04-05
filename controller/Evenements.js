@@ -40,4 +40,26 @@ const GetEvenements =async(req,res)=>{
 
     }
 }
-module.exports = { AddEvenements ,GetEvenements};
+const PutEvenements = async (req, res) => {
+    try {
+        const EvenementId = req.params.id;
+        const UpdateEvenement = req.body;
+        
+        // Vérifie si une nouvelle photo a été téléchargée et met à jour le chemin du fichier
+        let photoPath = '';
+        if (req.file) {
+            photoPath = req.file.path;
+            // Ajoute le chemin de la nouvelle photo à l'objet de mise à jour
+            UpdateEvenement.Photo = photoPath;
+        }
+
+        console.log(UpdateEvenement);
+        
+        await Evenements.findByIdAndUpdate(EvenementId, UpdateEvenement);
+        res.status(200).json({ message: 'Evenement updated successfully.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+module.exports = { AddEvenements ,GetEvenements,PutEvenements};

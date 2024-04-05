@@ -18,7 +18,7 @@ const AddDomaine= async (req, res) => {
 
 const GetDomaine =async(req,res)=>{
     try {
-        const Domaine=await Domaine.find()
+        const Domaine=await Domaines.find()
         res.status(200).json({msg:'Domaine retrieved successfully ',Domaine:Domaine})
 
 

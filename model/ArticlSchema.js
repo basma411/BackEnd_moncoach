@@ -27,7 +27,10 @@ const ArticleSchema = new mongoose.Schema({
         type: Boolean, 
         default: false,
     },
-   
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin'
+    }
 });
 
 const Article = mongoose.model('Article', ArticleSchema); 

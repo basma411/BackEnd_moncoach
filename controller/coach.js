@@ -195,20 +195,65 @@ const getcoach = async (req, res) => {
     res.status(500).json({ msg: "error get",error:error });
   }
 };
-
-// Route pour mettre à jour un coach
-const putCoach= async (req, res) => {
+const getCoaches = async (req, res) => {
   try {
-      const coachId = req.params.id;
-      const updatedCoachData = req.body; // Les données mises à jour du coach
-      // Mettre à jour le coach avec l'ID spécifié
-      await Coach.findByIdAndUpdate(coachId, updatedCoachData);
-      res.status(200).json({ message: 'Coach updated successfully.' });
+    // Rechercher tous les coachs dans la base de données
+    const coaches = await Coach.find();
+
+    // Vérifier si aucun coach n'a été trouvé
+    if (!coaches || coaches.length === 0) {
+      return res.status(404).json({ message: 'No coaches found.' });
+    }
+
+    // Retourner la liste des coachs
+    res.status(200).json({ coaches });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+// Route pour mettre à jour un coach
+const putCoach = async (req, res) => {
+  try {
+    const coachId = req.params.id;
+    const updatedCoachData = req.body; // Les données mises à jour du coach
+
+    // Vérifie si une nouvelle photo a été téléchargée et met à jour le chemin du fichier
+    let photoPath = "";
+    if (req.files && req.files['Photo']) {
+      photoPath = req.files['Photo'][0].path;
+      // Ajoute le chemin de la nouvelle photo aux données mises à jour du coach
+      updatedCoachData.Photo = photoPath;
+    }
+
+    // Vérifie si un nouveau logo a été téléchargé et met à jour le chemin du fichier
+    let logoPath = "";
+    if (req.files && req.files['Logo']) {
+      logoPath = req.files['Logo'][0].path;
+      // Ajoute le chemin du nouveau logo aux données mises à jour du coach
+      updatedCoachData.Logo = logoPath;
+    }
+
+    // Vérifie si un nouveau PDF a été téléchargé et met à jour le chemin du fichier
+    let pdfPath = "";
+    if (req.files && req.files['FichierPDF']) {
+      pdfPath = req.files['FichierPDF'][0].path;
+      // Ajoute le chemin du nouveau PDF aux données mises à jour du coach
+      updatedCoachData.FichierPDF = pdfPath;
+    }
+
+    console.log(updatedCoachData);
+
+    // Mettre à jour le coach avec l'ID spécifié
+    await Coach.findByIdAndUpdate(coachId, updatedCoachData);
+    res.status(200).json({ message: 'Coach updated successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+
 const deleteCoach= async (req, res) => {
   try {
       const coachId = req.params.id;
@@ -221,4 +266,4 @@ const deleteCoach= async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
   }
 }
-module.exports = { registre, login,getcoach ,putCoach,deleteCoach};
+module.exports = { registre, login,getcoach ,putCoach,deleteCoach,getCoaches};

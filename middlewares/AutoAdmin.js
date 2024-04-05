@@ -23,7 +23,7 @@ const adminAuthMiddleware = async (req, res, next) => {
         }
 
         // Ajouter l'objet admin à la requête pour une utilisation ultérieure dans les routes protégées par ce middleware
-        req.admin = admin;
+        req.body.admin = admin;
 
         // Passer la requête au middleware suivant
         next();
