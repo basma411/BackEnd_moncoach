@@ -1,5 +1,5 @@
 const express = require("express");
-const { registre, login, getcoach, putCoach, deleteCoach, getCoaches } = require("../controller/coach");
+const { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible } = require("../controller/coach");
 const router = express.Router();
 const { upload } = require("../middlewares/upload");
 const { check } = require("express-validator");
@@ -19,7 +19,8 @@ router.post(
 
 router.post("/login", login);
 router.get("/getCoach", AutoCoach, getcoach);
-router.get("/coaches", adminAuthMiddleware, getCoaches); // Nouvelle route pour obtenir tous les coachs
+router.get("/coachesVisible", adminAuthMiddleware, getCoachesVisible); 
+router.get("/coachesInvisible", adminAuthMiddleware, getCoachesInvisible); 
 
 router.put("/putcoach/:id",  upload.fields([{ name: 'Photo' }, { name: 'Logo' }, { name: 'FichierPDF' }]),adminAuthMiddleware, putCoach);
 router.delete("/deletecoach/:id", adminAuthMiddleware, deleteCoach);

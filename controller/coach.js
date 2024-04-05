@@ -195,10 +195,27 @@ const getcoach = async (req, res) => {
     res.status(500).json({ msg: "error get",error:error });
   }
 };
-const getCoaches = async (req, res) => {
+const getCoachesVisible = async (req, res) => {
   try {
     // Rechercher tous les coachs dans la base de données
-    const coaches = await Coach.find();
+    const coaches = await Coach.find({Visible:true});
+
+    // Vérifier si aucun coach n'a été trouvé
+    if (!coaches || coaches.length === 0) {
+      return res.status(404).json({ message: 'No coaches found.' });
+    }
+
+    // Retourner la liste des coachs
+    res.status(200).json({ coaches });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+const getCoachesInvisible = async (req, res) => {
+  try {
+    // Rechercher tous les coachs dans la base de données
+    const coaches = await Coach.find({Visible:false});
 
     // Vérifier si aucun coach n'a été trouvé
     if (!coaches || coaches.length === 0) {
@@ -266,4 +283,4 @@ const deleteCoach= async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
   }
 }
-module.exports = { registre, login,getcoach ,putCoach,deleteCoach,getCoaches};
+module.exports = { registre, login,getcoach ,putCoach,deleteCoach,getCoachesInvisible,getCoachesVisible};

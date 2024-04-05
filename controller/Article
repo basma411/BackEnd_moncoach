@@ -20,15 +20,25 @@ const AddArticle = async (req, res) => {
     }
 }
 
-const GetArticle =async(req,res)=>{
+const GetArticlesInvisible = async (req, res) => {
     try {
-        const Article=await Articl.find()
-        res.status(200).json({msg:'Articls retrieved successfully ',Articles:Article})
-
-
+        const articles = await Article.find({ Visible: false });
+        console.log("Retrieved articles:", articles);
+        res.status(200).json({ msg: 'Articles retrieved successfully', articles: articles });
     } catch (error) {
-            res.status(500).json({ msg: error });
+        console.error("Error while retrieving articles:", error);
+        res.status(500).json({ msg: 'Internal server error' });
+    }
+}
 
+const GetArticlesVisible = async (req, res) => {
+    try {
+        const articles = await Article.find({ Visible: true });
+        console.log("Retrieved articles:", articles);
+        res.status(200).json({ msg: 'Articles retrieved successfully', articles: articles });
+    } catch (error) {
+        console.error("Error while retrieving articles:", error);
+        res.status(500).json({ msg: 'Internal server error' });
     }
 }
 const UpdateArticle = async (req, res) => {
@@ -60,4 +70,4 @@ const DeleteArticle =async(req,res)=>{
        res.status(500).json({ message: 'Internal Server Error' });
    }
 }
-module.exports = { AddArticle,GetArticle,UpdateArticle,DeleteArticle };
+module.exports = { AddArticle, GetArticlesInvisible, GetArticlesVisible, UpdateArticle, DeleteArticle };
