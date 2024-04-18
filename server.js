@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
+
 app.use(express.json());
+const cors=require('cors')
+app.use(cors());
+
 const dotenv = require('dotenv');
 dotenv.config({path:"./config/.env"});
 app.use('/upload',express.static('upload'))
@@ -22,6 +26,22 @@ const RouterPartenaire=require('./router/Partenaire')
 app.use('/api',RouterPartenaire)
 const RouterVedio=require('./router/Vedio')
 app.use('/api',RouterVedio)
+const RouterContact=require('./router/contact')
+app.use('/api',RouterContact)
+const RouterNewsletter=require('./router/Newsletter')
+app.use('/api',RouterNewsletter)
+const RouterIcon=require('./router/icon')
+app.use('/api',RouterIcon)
+const RouterSlide=require('./router/slide')
+app.use('/api',RouterSlide)
+const RouterTémoignage=require('./router/Témoignage')
+app.use('/api',RouterTémoignage)
+const RouterBiblio=require('./router/bibio')
+app.use('/api',RouterBiblio)
+const RouterPubAtelier=require('./router/PubAtelier')
+app.use('/api',RouterPubAtelier)
+const RouterInterface=require('./router/Interface')
+app.use('/api',RouterInterface)
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

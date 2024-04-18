@@ -1,7 +1,7 @@
 // middlewares/AutoAdmin.js
 
 const jwt = require('jsonwebtoken');
-const Admin = require('../model/AdminSchema'); // Assurez-vous d'importer votre modèle Admin
+const Admin = require('../models/AdminSchema'); // Assurez-vous d'importer votre modèle Admin
 
 const adminAuthMiddleware = async (req, res, next) => {
     try {
@@ -23,8 +23,8 @@ const adminAuthMiddleware = async (req, res, next) => {
         }
 
         // Ajouter l'objet admin à la requête pour une utilisation ultérieure dans les routes protégées par ce middleware
-        req.body.admin = admin;
-
+        req.body.admin = admin.id;
+console.log(admin.id)
         // Passer la requête au middleware suivant
         next();
     } catch (error) {
