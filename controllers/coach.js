@@ -243,47 +243,80 @@ const getCoachesInvisible = async (req, res) => {
 const putCoach = async (req, res) => {
   try {
     const coachId = req.params.id;
-    const updatedCoachData = req.body; // Les données mises à jour du coach
+    const updatedCoachData = req.body;
 
-    // Vérifie si une nouvelle photo a été téléchargée et met à jour le chemin du fichier
-    let photoPath = "";
-    if (req.files && req.files['Photo']) {
-      photoPath = req.files['Photo'][0].path;
-      // Ajoute le chemin de la nouvelle photo aux données mises à jour du coach
-      updatedCoachData.Photo = photoPath;
+  
+
+    // Vérifie s'il y a une nouvelle photo téléchargée
+    // let photoPath = "";
+    // if (req.files && req.files['imagee'] && Array.isArray(req.files['imagee'])) {
+    //   photoPath = req.files['imagee'][0].path; // Utilisez le bon champ pour accéder au chemin du fichier
+    //   // Ajoutez le chemin de la nouvelle photo aux données mises à jour du coach
+    //   updatedCoachData.Photo = photoPath;
+    // }
+
+    // Vérifie si les domaines d'intervention sont mis à jour
+    if (req.body.DomainesIntervention) {
+      // Assurez-vous que les domaines d'intervention sont un tableau
+      updatedCoachData.DomainesIntervention = req.body.DomainesIntervention.split(",").map((value) => value.trim());
     }
-
-    // Vérifie si un nouveau logo a été téléchargé et met à jour le chemin du fichier
-    let logoPath = "";
-    if (req.files && req.files['Logo']) {
-      logoPath = req.files['Logo'][0].path;
-      // Ajoute le chemin du nouveau logo aux données mises à jour du coach
-      updatedCoachData.Logo = logoPath;
+    // Vérifie si les méthodes de coaching sont mises à jour
+    if (req.body.MethodesDeCoaching) {
+      // Assurez-vous que les méthodes de coaching sont un tableau
+      updatedCoachData.MethodesDeCoaching = req.body.MethodesDeCoaching.split(",").map((value) => value.trim());
     }
-
-    // Vérifie si un nouveau PDF a été téléchargé et met à jour le chemin du fichier
-    let pdfPath = "";
-    if (req.files && req.files['FichierPDF']) {
-      pdfPath = req.files['FichierPDF'][0].path;
-      // Ajoute le chemin du nouveau PDF aux données mises à jour du coach
-      updatedCoachData.FichierPDF = pdfPath;
-    }
-
-    console.log(updatedCoachData);
 
     // Mettre à jour le coach avec l'ID spécifié
-    await Coach.findByIdAndUpdate(coachId, updatedCoachData);
-    res.status(200).json({ message: 'Coach updated successfully.' });
+    await Coach.findByIdAndUpdate({_id: coachId}, updatedCoachData);
+    res.status(200).json({ message: 'Coach updated successfully.', Coach: updatedCoachData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+// Route pour mettre à jour l'image d'un coach
+const putCoachImage = async (req, res) => {
+  try {
+    const CoachId = req.params.id; // Fixed coach ID
+    let photoPath = "";
+    const updateImage = req.body;
+    
+    // Check if there are uploaded files
+    if (req.files && req.files['imagee']) {
+      photoPath = req.files['imagee'][0].path; // Get the path of the uploaded image
+    }
+    
+    updateImage.Photo = photoPath;
+
+    // Update the image path in the database for the specified coach ID
+    const updatedCoach = await Coach.findByIdAndUpdate(
+      CoachId,
+       photoPath , // Update the Photo field with the new path
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedCoach) {
+      // If no coach is found with the specified ID, return a 404 error
+      return res.status(404).json({ message: 'Coach not found.' });
+    }
+
+    // Return a response with a success message and the image path
+    return res.status(200).json({ message: 'Coach image updated successfully.', imagePath: photoPath });
+  } catch (error) {
+    // Error handling
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+
+
+
+
 const updateCoachCredentials = async (req, res) => {
   try {
     const coachId = req.body.Coachid; // Récupère l'ID du coach connecté depuis le token JWT
     const { oldPassword, newPassword, newEmail } = req.body; // Récupère les données du corps de la requête
-    console.log(oldPassword, newPassword, newEmail )
     // Récupère les données actuelles du coach depuis la base de données
     const coach = await Coach.findById(coachId);
     if (!coach) {
@@ -301,7 +334,6 @@ const updateCoachCredentials = async (req, res) => {
       // Ajoute le nouvel email aux données à mettre à jour
       coach.Email = newEmail;
     }
-    console.log(newEmail)
 
     // Vérifie si le nouveau mot de passe est fourni
     if (newPassword) {
@@ -343,4 +375,4 @@ const deleteCoach= async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
   }
 }
-module.exports = { registre, login,getcoach ,putCoach,deleteCoach,getCoachesInvisible,getCoachesVisible,updateCoachCredentials};
+module.exports = { registre, login,getcoach ,putCoach,deleteCoach,getCoachesInvisible,getCoachesVisible,updateCoachCredentials,putCoachImage};

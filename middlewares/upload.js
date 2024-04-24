@@ -5,6 +5,7 @@ const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         if (file.mimetype === 'application/pdf') {
             cb(null, 'upload/pdfs/');
+
         } else if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
             cb(null, 'upload/images/');
         } else {
@@ -12,6 +13,7 @@ const storage = multer.diskStorage({
         }
     },
     filename: function(req, file, cb) {
+        console.log(file)
         let ext = path.extname(file.originalname);
         cb(null, Date.now() + ext);
         console.log(Date.now() + ext)

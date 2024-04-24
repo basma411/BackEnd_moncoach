@@ -13,7 +13,9 @@ const CoachSchema = new mongoose.Schema({
     },
     Governorat: {
         type: String,
-        required: true
+        required: true,
+        enum: ['Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan', 'Bizerte', 'Béja', 'Jendouba', 'Kef', 'Siliana', 'Kairouan', 'Kasserine', 'Sidi Bouzid', 'Sousse', 'Monastir', 'Mahdia', 'Sfax', 'Kébili', 'Gabès', 'Medenine', 'Tataouine', 'Tozeur', 'Gafsa']
+
     },
     NumTel: {
         type: String,
@@ -38,7 +40,8 @@ const CoachSchema = new mongoose.Schema({
     MethodesDeCoaching: {
         type: [String], 
         enum: ['Face à face', 'En ligne'],
-        required: true
+        required: true,
+        
     },
     Langues: {
         type: [String], 
