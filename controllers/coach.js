@@ -239,24 +239,31 @@ const getCoachesInvisible = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
+
+
+
+
+
+
+
+
 // Route pour mettre à jour un coach
 const putCoach = async (req, res) => {
   try {
-    const coachId = req.params.id;
+    const CoachId = req.params.id; 
     const updatedCoachData = req.body;
-
-  
-
-    // Vérifie s'il y a une nouvelle photo téléchargée
-    // let photoPath = "";
-    // if (req.files && req.files['imagee'] && Array.isArray(req.files['imagee'])) {
-    //   photoPath = req.files['imagee'][0].path; // Utilisez le bon champ pour accéder au chemin du fichier
-    //   // Ajoutez le chemin de la nouvelle photo aux données mises à jour du coach
-    //   updatedCoachData.Photo = photoPath;
-    // }
-
-    // Vérifie si les domaines d'intervention sont mis à jour
-    if (req.body.DomainesIntervention) {
+    
+    // Fixed coach ID
+    let photoPath = "";
+    
+    // Check if there are uploaded files
+    if (req.files && req.files['imagee']) {
+      photoPath = req.files['imagee'][0].path; // Get the path of the uploaded image
+      updatedCoachData.Photo = photoPath; // Update the Photo field with the new path
+    }
+     // Vérifie si les domaines d'intervention sont mis à jour
+     if (req.body.DomainesIntervention) {
       // Assurez-vous que les domaines d'intervention sont un tableau
       updatedCoachData.DomainesIntervention = req.body.DomainesIntervention.split(",").map((value) => value.trim());
     }
@@ -265,16 +272,54 @@ const putCoach = async (req, res) => {
       // Assurez-vous que les méthodes de coaching sont un tableau
       updatedCoachData.MethodesDeCoaching = req.body.MethodesDeCoaching.split(",").map((value) => value.trim());
     }
+    // Update the coach data in the database for the specified coach ID
+    const updatedCoach = await Coach.findByIdAndUpdate(
+      CoachId,
+      updatedCoachData, // Update all coach fields
+      { new: true } // Return the updated document
+    );
 
-    // Mettre à jour le coach avec l'ID spécifié
-    await Coach.findByIdAndUpdate({_id: coachId}, updatedCoachData);
-    res.status(200).json({ message: 'Coach updated successfully.', Coach: updatedCoachData });
+    if (!updatedCoach) {
+      // If no coach is found with the specified ID, return a 404 error
+      return res.status(404).json({ message: 'Coach not found.' });
+    }
+
+    // Return a response with a success message and the updated coach data
+    return res.status(200).json({ message: 'Coach updated successfully.', updatedCoach });
   } catch (error) {
+    // Error handling
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+
 // Route pour mettre à jour l'image d'un coach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const putCoachImage = async (req, res) => {
   try {
     const CoachId = req.params.id; // Fixed coach ID
