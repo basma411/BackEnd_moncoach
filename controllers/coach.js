@@ -272,6 +272,15 @@ const putCoach = async (req, res) => {
       // Assurez-vous que les méthodes de coaching sont un tableau
       updatedCoachData.MethodesDeCoaching = req.body.MethodesDeCoaching.split(",").map((value) => value.trim());
     }
+    // Vérifie si les méthodes de coaching sont mises à jour
+    if (req.body.Langues) {
+      // Assurez-vous que les méthodes de coaching sont un tableau
+      updatedCoachData.Langues = req.body.Langues.split(",").map((value) => value.trim());
+    }
+    if (req.body.TypesDeClients) {
+      // Assurez-vous que les méthodes de coaching sont un tableau
+      updatedCoachData.TypesDeClients = req.body.TypesDeClients.split(",").map((value) => value.trim());
+    }
     // Update the coach data in the database for the specified coach ID
     const updatedCoach = await Coach.findByIdAndUpdate(
       CoachId,
