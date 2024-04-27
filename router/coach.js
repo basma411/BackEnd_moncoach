@@ -33,8 +33,7 @@ router.put(
   AutoCoach,
   putCoach
 );
-router.put('/coach/edit',AutoCoach,upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),updateCoachCredentials)
+router.put('/coach/edit/:id',AutoCoach,upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),updateCoachCredentials)
 router.delete("/deletecoach/:id", adminAuthMiddleware, deleteCoach);
 ///image
-router.put('/editImage/:id',AutoCoach,upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),putCoachImage)
 module.exports = router;
