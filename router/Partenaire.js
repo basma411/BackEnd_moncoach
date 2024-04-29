@@ -14,7 +14,7 @@ router.post(
   adminAuthMiddleware,
   AddPartenaire
 );
-router.get("/partenaires/get", adminAuthMiddleware, getPartenaires);
+router.get("/partenaires/get", getPartenaires);
 router.delete("/partenaires/delete/:id", deletePartenaire);
 
 module.exports = router;

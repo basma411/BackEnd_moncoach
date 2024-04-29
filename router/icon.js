@@ -6,7 +6,7 @@ const adminAuthMiddleware = require("../middlewares/AutoAdmin");
 const router = express.Router();
 
 router.post("/Icon",upload.single("image"), addIcon);
-router.get("/Icon/get", adminAuthMiddleware,getIcon);
+router.get("/Icon/get",getIcon);
 router.put("/Icon/update/:id",adminAuthMiddleware,updateicon );
 
 module.exports = router;
