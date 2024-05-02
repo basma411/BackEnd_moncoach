@@ -13,7 +13,7 @@ const adminAuthMiddleware = require('../middlewares/AutoAdmin');
 router.post('/add-biblios', upload.single('image'), addBiblio);
 
 // Route for getting all bibliography entries
-router.get('/get-biblios',adminAuthMiddleware, getBiblios);
+router.get('/get-biblios', getBiblios);
 
 // Route for updating a bibliography entry with file upload
 router.put('/put-biblios/:id',adminAuthMiddleware, upload.single('image'), updateBiblio);
