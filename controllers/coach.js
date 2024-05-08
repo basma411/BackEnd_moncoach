@@ -267,4 +267,35 @@ const deleteCoach = async (req, res) => {
   }
 }
 
-module.exports = { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials, putCoachImage };
+const searchCoach = async (req, res) => {
+  try {
+    const {NomPrenom,DomainesIntervention,Governorat } = req.body;
+    const filter = {};
+  
+    // Vérifier si le paramètre nom est fourni
+   
+    if (DomainesIntervention) {
+      filter.DomainesIntervention = DomainesIntervention;
+    }
+    if (Governorat) {
+      filter.Governorat =Governorat;
+    }
+    if (NomPrenom) {
+      filter.NomPrenom = NomPrenom;
+    }
+    console.log(filter)
+
+    // const coaches = await Coach.find({filter});
+    const coaches = await Coach.find(filter);
+
+    // Répondre avec la liste des coachs correspondants
+    res.status(200).json({ coaches });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+};
+
+
+
+module.exports = { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials, putCoachImage ,searchCoach};

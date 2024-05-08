@@ -8,7 +8,7 @@ const {
   getCoachesInvisible,
   getCoachesVisible,
   updateCoachCredentials,
-  putCoachImage,
+  searchCoach,
 } = require("../controllers/coach");
 const router = express.Router();
 const { upload } = require("../middlewares/upload");
@@ -35,5 +35,5 @@ router.put(
 );
 router.put('/coach/edit/:id',AutoCoach,upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),updateCoachCredentials)
 router.delete("/deletecoach/:id", adminAuthMiddleware, deleteCoach);
-///image
+router.post("/cherchecoach", searchCoach);
 module.exports = router;
