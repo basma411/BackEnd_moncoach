@@ -7,7 +7,6 @@ const SlideSchema = new mongoose.Schema({
     },
     titre1: {
         type: String,
-        required: true
     },
     titre2: {
         type: String,

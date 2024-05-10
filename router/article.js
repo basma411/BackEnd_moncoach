@@ -10,7 +10,7 @@ const { UpdateArticle } = require("../controllers/Article");
 const adminAuthMiddleware = require("../middlewares/AutoAdmin");
 const router = express.Router();
 
-router.post("/Article", upload.single("Photo"), AddArticle);
+router.post("/Article", upload.single("imagee"), AddArticle);
 router.get("/ArticleInvisible/get",adminAuthMiddleware, GetArticlesInvisible);
 router.get("/ArticleVisible/get", GetArticlesVisible);
 

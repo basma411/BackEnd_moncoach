@@ -17,7 +17,7 @@ const ArticleSchema = new mongoose.Schema({
     },
     Photo : {
         type: String,
-        required: true
+        // required: true
 
     },
     Lien: {
