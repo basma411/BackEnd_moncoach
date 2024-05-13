@@ -13,7 +13,7 @@ const CoachSchema = new mongoose.Schema({
     },
     Governorat: {
         type: String,
-        required: true,
+
         enum: ['Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan', 'Bizerte', 'Béja', 'Jendouba', 'Kef', 'Siliana', 'Kairouan', 'Kasserine', 'Sidi Bouzid', 'Sousse', 'Monastir', 'Mahdia', 'Sfax', 'Kébili', 'Gabès', 'Medenine', 'Tataouine', 'Tozeur', 'Gafsa']
 
     },
@@ -40,26 +40,21 @@ const CoachSchema = new mongoose.Schema({
     MethodesDeCoaching: {
         type: [String], 
         enum: ['Face à face', 'En ligne'],
-        required: true,
         
     },
     Langues: {
         type: [String], 
         enum: ['Arabe', 'Français', 'Anglais'],
-        required: true
     },
     TypesDeClients: {
         type: [String],
         enum: ['Personne', 'Organisation'],
-        required: true
     },
     TarifPreferentiel: {
         type: Boolean, 
-        required: true
     },
     Photo: {
         type: String, 
-        required: true
     },
     Site: {
         type: String,
@@ -67,7 +62,6 @@ const CoachSchema = new mongoose.Schema({
     Logo: {
         type: String, 
         default: '/default-photo.jpg',
-        required: true
     },
 
     Facebook: {
@@ -81,7 +75,6 @@ const CoachSchema = new mongoose.Schema({
     },
     FichierPDF: {
         type: String,
-        required: true
     },
     Visible: {
         type: Boolean,

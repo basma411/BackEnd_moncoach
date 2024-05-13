@@ -14,7 +14,9 @@ const registre = async (req, res) => {
       const {
         NomPrenom, DomainesIntervention, AutreDomaine, Governorat, NumTel, Email, Password, ConfirmPassword, Bio, MethodesDeCoaching, Langues, TypesDeClients, TarifPreferentiel, Site, Youtube, LinkedIn, Facebook, FichierPDF,
       } = req.body;
-
+if (!DomainesIntervention || DomainesIntervention.length === 0) {
+  return res.status(400).json({ msg: "Veuillez sélectionner au moins un domaine d'intervention." });
+}
       if (Password !== ConfirmPassword) {
         res.status(400).json({ msg: "Password and confirmation password do not match." });
       }
@@ -24,8 +26,8 @@ const registre = async (req, res) => {
       let logoPath = "";
 
       if (req.files) {
-        if (req.files["Photo"] && (req.files["Photo"][0].mimetype === "image/png" || req.files["Photo"][0].mimetype === "image/jpeg")) {
-          photoPath = req.files["Photo"][0].path;
+        if (req.files["imagee"] && (req.files["imagee"][0].mimetype === "image/png" || req.files["imagee"][0].mimetype === "image/jpeg")) {
+          photoPath = req.files["imagee"][0].path;
         }
 
         if (req.files["Logo"] && (req.files["Logo"][0].mimetype === "image/png" || req.files["Logo"][0].mimetype === "image/jpeg")) {
@@ -42,8 +44,12 @@ const registre = async (req, res) => {
       if (coachexist) {
         res.status(400).json({ msg: "This email already exists." });
       } else {
-        const domainesInterventionn = DomainesIntervention.split(",").map((value) => value.trim());
-        const domainesPromises = domainesInterventionn.map(async (domaineName) => {
+   // Si DomainesIntervention est une chaîne, convertissez-la en tableau
+   const domainesIntervention = Array.isArray(DomainesIntervention)
+   ? DomainesIntervention
+   : DomainesIntervention.split(",").map((domaine) => domaine.trim());    
+   
+   const domainesPromises = domainesIntervention.map(async (domaineName) => {
           const domaine = await Domaines.findOne({ NomDomaine: domaineName });
           return domaine;
         });
@@ -118,13 +124,13 @@ const getcoach = async (req, res) => {
 
 const getCoachesVisible = async (req, res) => {
   try {
-    const coaches = await Coach.find({ Visible: true });
+    const coachesVisible = await Coach.find({ Visible: true });
 
-    if (!coaches || coaches.length === 0) {
+    if (!coachesVisible || coachesVisible.length === 0) {
       return res.status(404).json({ message: 'No coaches found.' });
     }
 
-    res.status(200).json({ coaches });
+    res.status(200).json({ coachesVisible });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
