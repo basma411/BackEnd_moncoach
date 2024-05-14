@@ -19,7 +19,7 @@ const AddAdmin = async (req, res) => {
                 password: hashedPassword
             });
 
-            const token = JWT.sign(
+            const token1 = JWT.sign(
                 {
                     id: admin._id,
                 },
@@ -27,7 +27,7 @@ const AddAdmin = async (req, res) => {
                 { expiresIn: "7D" }
             );
 
-            res.status(200).json({ msg: admin, token });
+            res.status(200).json({ msg: admin, token1 });
         }
     } catch (error) {
         res.status(500).json({ msg: "An error occurred while registering the Admin." });
@@ -54,9 +54,9 @@ const LoginAdmin = async (req, res) => {
                 return res.status(401).json({ msg: "Incorrect password." });
             }
 
-            const token = JWT.sign({ id: admin._id }, process.env.JWT_secret, { expiresIn: "7D" });
+            const token1 = JWT.sign({ id: admin._id }, process.env.JWT_secret, { expiresIn: "7D" });
 
-            res.status(200).json({ msg: "Login successful.", token });
+            res.status(200).json({ msg: "Login successful.", token1 });
         }
     } catch (error) {
         res.status(500).json({ msg: "An error occurred while logging in." });

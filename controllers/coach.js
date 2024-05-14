@@ -139,13 +139,13 @@ const getCoachesVisible = async (req, res) => {
 
 const getCoachesInvisible = async (req, res) => {
   try {
-    const coaches = await Coach.find({ Visible: false });
+    const coachesInviseble = await Coach.find({ Visible: false });
 
-    if (!coaches || coaches.length === 0) {
+    if (!coachesInviseble || coachesInviseble.length === 0) {
       return res.status(404).json({ message: 'No coaches found.' });
     }
 
-    res.status(200).json({ coaches });
+    res.status(200).json({ coachesInviseble:coachesInviseble });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });

@@ -26,7 +26,7 @@ router.post(
 router.post("/login", login);
 router.get("/getCoach", AutoCoach, getcoach);
 router.get("/coachesVisible", getCoachesVisible);
-router.get("/coachesInvisible", adminAuthMiddleware, getCoachesInvisible);
+router.get("/coachesInvisible", getCoachesInvisible);
 router.put(
   "/putcoach/:id",
   upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),
