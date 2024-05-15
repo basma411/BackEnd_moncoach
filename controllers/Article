@@ -3,14 +3,14 @@ const Article = require('../models/ArticlSchema');
 const AddArticle = async (req, res) => {
     try {
         const { Auteur, Titre, Texte, Lien } = req.body;
-        console.log( req.body)
-        let photoPath = '';
-       if (req.files && req.files['imagee']) {
-      photoPath = req.files['imagee'][0].path;
+        let photoPath = "";
+
+        if (req.files) {
+            if (req.files["imagee"] && (req.files["imagee"][0].mimetype === "image/png" || req.files["imagee"][0].mimetype === "image/jpeg")) {
+              photoPath = req.files["imagee"][0].path;
+            }
     }
-    console.log(photoPath)
-
-
+console.log("path",req.files["imagee"][0].path)
         const article = await Article.create({
             Auteur, Titre, Texte, Photo: photoPath, Lien
         });
@@ -25,7 +25,6 @@ const AddArticle = async (req, res) => {
 const GetArticlesInvisible = async (req, res) => {
     try {
         const articles = await Article.find({ Visible: false });
-        console.log("Retrieved articles:", articles);
         res.status(200).json({ msg: 'Articles retrieved successfully', articles: articles });
     } catch (error) {
         console.error("Error while retrieving articles:", error);
