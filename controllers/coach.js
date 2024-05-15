@@ -289,6 +289,8 @@ const searchCoach = async (req, res) => {
     if (NomPrenom) {
       filter.NomPrenom = NomPrenom;
     }
+    filter.Visible = true;
+
     console.log(filter)
 
     // const coaches = await Coach.find({filter});

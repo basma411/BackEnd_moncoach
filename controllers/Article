@@ -3,10 +3,13 @@ const Article = require('../models/ArticlSchema');
 const AddArticle = async (req, res) => {
     try {
         const { Auteur, Titre, Texte, Lien } = req.body;
+        console.log( req.body)
         let photoPath = '';
        if (req.files && req.files['imagee']) {
       photoPath = req.files['imagee'][0].path;
     }
+    console.log(photoPath)
+
 
         const article = await Article.create({
             Auteur, Titre, Texte, Photo: photoPath, Lien
