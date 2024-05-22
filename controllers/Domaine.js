@@ -2,11 +2,11 @@ const Domaines = require('../models/DomaineSchema');
 
 const AddDomaine= async (req, res) => {
     try {
-        const {NomDomaine} = req.body;
+        const {domaines} = req.body;
 
 
         const Domaine = await Domaines.create({
-            NomDomaine
+            domaines
         });
 
         res.status(200).json({ Domaine });

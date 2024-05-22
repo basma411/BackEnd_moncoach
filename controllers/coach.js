@@ -50,7 +50,7 @@ if (!domain || domain.length === 0) {
    : domain.split(",").map((domaine) => domaine.trim());    
    
    const domainesPromises = domainI.map(async (domaineName) => {
-          const domaine = await Domaines.findOne({ NomDomaine: domaineName });
+          const domaine = await Domaines.findOne({ domaines: domaineName });
           return domaine;
         });
 
@@ -60,7 +60,7 @@ if (!domain || domain.length === 0) {
           res.status(400).json({ msg: "One or more domains not found." });
         }
 
-        const domaineNom = domaines.map((domaine) => domaine.NomDomaine);
+        const domaineNom = domaines.map((domaine) => domaine.domaines);
 
         const decryPaswoerd = await bcrypt.hash(pwd, 10);
         const MethDeCoach = method.split(",").map((value) => value.trim());

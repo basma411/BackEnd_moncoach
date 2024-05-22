@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const DomaineSchema = new mongoose.Schema({
-    NomDomaine: {
+    domaines: {
         type: String,
         required: true,
         unique: true
