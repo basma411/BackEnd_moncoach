@@ -2,7 +2,7 @@ const Article = require('../models/ArticlSchema');
 
 const AddArticle = async (req, res) => {
     try {
-        const { Auteur, Titre, Texte, Lien } = req.body;
+        const { auteur, titre, texte, lien } = req.body;
         let photoPath = "";
 
         if (req.files) {
@@ -12,7 +12,7 @@ const AddArticle = async (req, res) => {
     }
 console.log("path",req.files["imagee"][0].path)
         const article = await Article.create({
-            Auteur, Titre, Texte, Photo: photoPath, Lien
+            auteur, titre, texte, photo: photoPath, lien
         });
 
         res.status(200).json({ article });
@@ -46,11 +46,12 @@ const UpdateArticle = async (req, res) => {
     try {
         const ArticleId = req.params.id;
         const updatedArticleData = req.body; // Les données mises à jour de l'article
+        console.log(updatedArticleData)
         let photoPath = '';
         if (req.file) {
             photoPath = req.file.path;
             // Ajoute le chemin de la nouvelle photo à l'objet de mise à jour
-            updatedArticleData.Photo = photoPath;
+            updatedArticleData.photo = photoPath;
         }
         console.log(updatedArticleData)
         await Article.findByIdAndUpdate(ArticleId, updatedArticleData);

@@ -33,9 +33,10 @@ const updateicon = async (req, res) => {
         const IconUpdate = req.body;
         await Icon.findByIdAndUpdate(IconID, IconUpdate);
 
-        res.status(201).json({ success: true, message: "Icon  updated successfully"});
-    } catch (err) {
-        res.status(500).json({ msg: error });
+        res.status(201).json({ success: true, message: "Icon updated successfully" }); // Correction du message
+    } catch (error) { // Utilisation de 'error' au lieu de 'err'
+        res.status(500).json({ msg: error }); // Utilisation de 'error' au lieu de 'err'
     }
 };
+
 module.exports = { addIcon,getIcon ,updateicon};

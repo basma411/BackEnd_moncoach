@@ -11,15 +11,16 @@ const AddAdmin = async (req, res) => {
             // S'il y a des erreurs de validation, renvoyer un message d'erreur
             res.status(400).json({ error: errors.array() });
         } else {
-            const { login, password } = req.body;
-            const hashedPassword = await bcrypt.hash(password, 10);
+            const { nom_utilisateur,  mot_de_passe ,email} = req.body;
+            const hashedPassword = await bcrypt.hash(mot_de_passe, 10);
             
             const admin = await Admin.create({
-                login,
-                password: hashedPassword
+                nom_utilisateur,
+                mot_de_passe: hashedPassword,
+                email
             });
 
-            const token1 = JWT.sign(
+            const token = JWT.sign(
                 {
                     id: admin._id,
                 },
@@ -27,7 +28,7 @@ const AddAdmin = async (req, res) => {
                 { expiresIn: "7D" }
             );
 
-            res.status(200).json({ msg: admin, token1 });
+            res.status(200).json({ msg: admin, token });
         }
     } catch (error) {
         res.status(500).json({ msg: "An error occurred while registering the Admin." });
@@ -41,22 +42,22 @@ const LoginAdmin = async (req, res) => {
         if (!errors.isEmpty()) {
             res.status(400).json({ error: errors.array() });
         } else {
-            const { login, password } = req.body;
-            const admin = await Admin.findOne({ login });
+            const { nom_utilisateur, mot_de_passe } = req.body;
+            const admin = await Admin.findOne({ nom_utilisateur });
 
             if (!admin) {
                 return res.status(404).json({ msg: "Admin not found." });
             }
 
-            const passwordMatch = await bcrypt.compare(password, admin.password);
+            const passwordMatch = await bcrypt.compare(mot_de_passe, admin.mot_de_passe);
 
             if (!passwordMatch) {
                 return res.status(401).json({ msg: "Incorrect password." });
             }
 
-            const token1 = JWT.sign({ id: admin._id }, process.env.JWT_secret, { expiresIn: "7D" });
+            const token = JWT.sign({ id: admin._id }, process.env.JWT_secret, { expiresIn: "7D" });
 
-            res.status(200).json({ msg: "Login successful.", token1 });
+            res.status(200).json({ msg: "Login successful.", token });
         }
     } catch (error) {
         res.status(500).json({ msg: "An error occurred while logging in." });

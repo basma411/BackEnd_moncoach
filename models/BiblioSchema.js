@@ -5,17 +5,15 @@ const BiblioSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {
+    texte: {
         type: String,
         required: true
     },
-    auteur1: {
+    editeur: {
         type: String,
         required: true
     },
-    auteur2: {
-        type: String,
-    },
+  
     annee: {
         type: String,
         required: true

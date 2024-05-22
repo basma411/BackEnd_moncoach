@@ -7,12 +7,12 @@ const addBiblio = async (req, res) => {
         if (req.file) {
             photoPath = req.file.path;
         }
-        const { image, description, auteur1,auteur2, annee } = req.body;
+        const { image, texte,editeur, annee } = req.body;
         const newBiblio = await Biblio.create({
             image: photoPath,
-            description,
-            auteur1,
-            auteur2,
+            texte,
+            editeur,
+          
             annee
         });
         res.status(201).json({ success: true, message: "Bibliography entry added successfully", Biblio: newBiblio });

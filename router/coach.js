@@ -18,8 +18,8 @@ const adminAuthMiddleware = require("../middlewares/AutoAdmin");
 
 router.post(
   "/registre",
-  upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),
-  [check("Email", "Invalid value for email.").isEmail()],
+  upload.fields([{ name: "imagee" }, { name: "logo" }, { name: "piece" }]),
+  [check("email", "Invalid value for email.").isEmail()],
   registre
 );
 
@@ -29,7 +29,7 @@ router.get("/coachesVisible", getCoachesVisible);
 router.get("/coachesInvisible", getCoachesInvisible);
 router.put(
   "/putcoach/:id",
-  upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),
+  upload.fields([{ name: "imagee" }, { name: "logo" }, { name: "piece" }]),
   AutoCoach,
   putCoach
 );

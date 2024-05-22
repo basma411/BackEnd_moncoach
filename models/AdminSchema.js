@@ -2,15 +2,21 @@ const mongoose = require('mongoose');
 
 const AdminSchema = new mongoose.Schema({
 
-    login: {
+    nom_utilisateur: {
         type: String,
         required: true,
         unique: true
     },
-    password: {
+    mot_de_passe: {
         type: String,
         required: true
     }
+    ,
+    email: {
+        type: String,
+        required: true
+    }
+   
 });
 
 const Admin = mongoose.model('Admin', AdminSchema);

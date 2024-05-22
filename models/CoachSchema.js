@@ -1,82 +1,96 @@
 const mongoose = require('mongoose');
 const CoachSchema = new mongoose.Schema({
-    NomPrenom: {
+    nom: {
         type: String,
         required: true
     },
-    DomainesIntervention: {
+    domain: {
         type: mongoose.Schema.Types.Mixed,
         ref: 'Domaine',
+        required: true
+
     },
     AutreDomaine: {
         type: String,
     },
-    Governorat: {
+    gouv: {
         type: String,
 
-        enum: ['Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan', 'Bizerte', 'Béja', 'Jendouba', 'Kef', 'Siliana', 'Kairouan', 'Kasserine', 'Sidi Bouzid', 'Sousse', 'Monastir', 'Mahdia', 'Sfax', 'Kébili', 'Gabès', 'Medenine', 'Tataouine', 'Tozeur', 'Gafsa']
+        enum: ['Tunis', 'Ariana', 'Ben Arous', 'Manouba', 'Nabeul', 'Zaghouan', 'Bizerte', 'Béja', 'Jendouba', 'Kef', 'Siliana', 'Kairouan', 'Kasserine', 'Sidi Bouzid', 'Sousse', 'Monastir', 'Mahdia', 'Sfax', 'Kébili', 'Gabès', 'Medenine', 'Tataouine', 'Tozeur', 'Gafsa'],
+        required: true
 
     },
-    NumTel: {
+    num: {
         type: String,
         required: true
     },
-    Email: {
+    email: {
         type: String,
         required: true
     },
-    Password: {
+    pwd: {
         type: String,
         required: true
     },
     ConfirmPassword: {
         type: String,
     },
-    Bio: {
+    bio: {
         type: String,
         // maxlength: 500,
         required: true
     },
-    MethodesDeCoaching: {
+    method: {
         type: [String], 
         enum: ['Face à face', 'En ligne'],
+        required: true
+
         
     },
-    Langues: {
+    langue: {
         type: [String], 
         enum: ['Arabe', 'Français', 'Anglais'],
+        required: true
+
     },
-    TypesDeClients: {
+    type_client: {
         type: [String],
         enum: ['Personne', 'Organisation'],
+        required: true
+
     },
-    TarifPreferentiel: {
+    tarif: {
         type: Boolean, 
+        required: true
+
     },
-    Photo: {
+    image: {
         type: String, 
+        required: true
+
     },
-    Site: {
+    site: {
         type: String,
+        
     },
-    Logo: {
+    logo: {
         type: String, 
         default: '/default-photo.jpg',
     },
 
-    Facebook: {
+    fb: {
         type: String,
     },
-    LinkedIn: {
+    In: {
         type: String,
     },
-    Youtube: {
+    yt: {
         type: String,
     },
-    FichierPDF: {
+    piece: {
         type: String,
     },
-    Visible: {
+    activ: {
         type: Boolean,
         default: false,
     },

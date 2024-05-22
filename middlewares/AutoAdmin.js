@@ -6,15 +6,15 @@ const Admin = require('../models/AdminSchema'); // Assurez-vous d'importer votre
 const adminAuthMiddleware = async (req, res, next) => {
     try {
         // Vérifier si le token d'authentification est présent dans les en-têtes de la requête
-        const token1 = req.headers.token;
+        const token = req.headers.token;
 
-        if (!token1) {
+        if (!token) {
             return res.status(401).json({ message: 'Authorization token is missing.' });
         }
 
         // Vérifier si le token est valide
-        const decodedToken = jwt.verify(token1, process.env.JWT_SECRET);
-
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+console.log(decodedToken)
         // Vérifier si l'utilisateur correspondant au token est un administrateur
         const admin = await Admin.findById(decodedToken.id);
 
