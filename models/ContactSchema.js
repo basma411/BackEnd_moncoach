@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ContactSchema = new mongoose.Schema({
-    Nom_Prénom: {
+    nom_prenom: {
         type: String,
         required: true
 
@@ -9,22 +9,22 @@ const ContactSchema = new mongoose.Schema({
     },
    
    
-    Téléphone: {
+    tel: {
         type: String,
         required: true
 
     },
-    Email: {
+    email: {
         type: String,
         required: true
 
     },
-    Date:
+    dates:
 {
     type:Date,
     default:Date.now
 },
-    Message: {
+    mssg: {
         type: String,
         required: true
 

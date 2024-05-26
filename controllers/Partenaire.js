@@ -1,14 +1,14 @@
 const Partenaires=require('../models/PartenaireSchema')
 const AddPartenaire = async (req, res) => {
     try {
-        const { Statut, Nom, } = req.body;
+        const { statut, nom, } = req.body;
         let photoPath = '';
         if (req.file) {
             photoPath = req.file.path;
         }
 
         const Partenaire = await Partenaires.create({
-            Statut, Nom,  Photo: photoPath
+            statut, nom,  photo: photoPath
         });
 
         res.status(200).json({ Partenaire });

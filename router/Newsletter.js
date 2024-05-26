@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
   "/Newsletter",
-  [check("Email", "Invalid value for email.").isEmail()],
+  [check("email", "Invalid value for email.").isEmail()],
   AddNewsletter
 );
 

@@ -8,18 +8,18 @@ const AddEvenements = async (req, res) => {
 
             return res.status(400).json({ error: errors.array() });
         } else { 
-            const { Titre, Texte, Lien, Lieu, Date, Photo } = req.body;
+            const { titre, texte, lien, lieu, dates } = req.body;
             let photoPath = '';
             if (req.file) {
                 photoPath = req.file.path;
             }
             const evenement = await Evenements.create({
-                Titre,
-                Texte,
-                Lien,
-                Lieu,
-                Date,
-                Photo: photoPath
+                titre,
+                texte,
+                lien,
+                lieu,
+                dates,
+                photo: photoPath
             });
             res.status(200).json({ evenement });
         }

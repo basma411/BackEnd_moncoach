@@ -11,10 +11,10 @@ const AddNewsletter = async (req, res) => {
 
             return res.status(400).json({ error: errors.array() });
         } else { 
-            const {Email } = req.body;
+            const {email } = req.body;
            
             const Newsletter = await Newsletters.create({
-              Email
+                email
             });
             res.status(200).json({ Newsletter });
         }
@@ -26,7 +26,7 @@ const AddNewsletter = async (req, res) => {
 const GetNewsletter = async (req, res) => {
     try {
         const Newsletter=await Newsletters.find()
-        res.status(200).json({msg:'Newsletter retrieved successfully ',Evenements:Newsletter})
+        res.status(200).json({msg:'Newsletter retrieved successfully ',Newsletters:Newsletter})
 
 
     } catch (error) {
@@ -38,6 +38,7 @@ const GetNewsletter = async (req, res) => {
 const DeleteNewsletter = async (req, res) => {
     try {
         const NewsletterID=req.params.id
+        console.log('NewsletterID',NewsletterID)
        await Newsletters.findOneAndDelete(NewsletterID)
        res.status(200).json({ message: 'Newsletter delete successfully.' });
 

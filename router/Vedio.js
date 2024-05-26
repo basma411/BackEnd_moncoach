@@ -11,14 +11,14 @@ const router = express.Router();
 
 // Route to add a new video
 
-router.post("/Vedio", upload.single("Photo"), adminAuthMiddleware, AddVedio);
+router.post("/Vedio", upload.single("images"), adminAuthMiddleware, AddVedio);
 // Route to delete a video
 router.delete("/Vedio/delete/:id", adminAuthMiddleware, DeleteVedio);
 
 // Route to update a video
 router.put(
   "/vedio/put/:id",
-  upload.single("Photo"),
+  upload.single("images"),
   adminAuthMiddleware,
   UpdateVedio
 );

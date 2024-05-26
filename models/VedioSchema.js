@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const VedioSchema = new mongoose.Schema({
-    Titre : {
+    titre : {
         type: String,
         required: true
 
@@ -9,12 +9,12 @@ const VedioSchema = new mongoose.Schema({
     },
    
    
-    Photo: {
+    images: {
         type: String,
         required: true
 
     },
-    Lien: {
+    lien: {
         type: String,
         required: true
 

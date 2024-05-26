@@ -2,13 +2,12 @@ const Contacts = require('../models/ContactSchema');
 const AddContact = async (req, res) => {
     try {
         // Récupérer les données du corps de la requête
-        const { Nom_Prénom, Téléphone, Email, Message } = req.body;
+        const { nom_prenom, tel, email, mssg } = req.body;
 
-   console.log(Nom_Prénom, Téléphone, Email, Message)
 
         // Sauvegarder le nouveau contact dans la base de données
         const savedContact =await Contacts.create({
-            Nom_Prénom, Téléphone,  Email,Message
+            nom_prenom, tel,  email,mssg
         });
 
         res.status(201).json({ success: true, message: "Contact ajouté avec succès", contact: savedContact });
@@ -19,7 +18,7 @@ const AddContact = async (req, res) => {
 const GetContact=async(rq,res)=>{
     try {
         const Contact=await Contacts.find()
-        res.status(200).json({msg:'Contacts retrieved successfully ',Contacts:Contact})
+        res.status(200).json({msg:'Contacts retrieved successfully ',Conts:Contact})
 
 
     } catch (error) {

@@ -23,7 +23,8 @@ const ArticleSchema = new mongoose.Schema({
     lien: {
         type: String,
 
-    }, Visible: {
+    },
+     Visible: {
         type: Boolean, 
         default: false,
     },

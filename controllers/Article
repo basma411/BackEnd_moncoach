@@ -10,7 +10,6 @@ const AddArticle = async (req, res) => {
               photoPath = req.files["imagee"][0].path;
             }
     }
-console.log("path",req.files["imagee"][0].path)
         const article = await Article.create({
             auteur, titre, texte, photo: photoPath, lien
         });
@@ -25,7 +24,7 @@ console.log("path",req.files["imagee"][0].path)
 const GetArticlesInvisible = async (req, res) => {
     try {
         const articles = await Article.find({ Visible: false });
-        res.status(200).json({ msg: 'Articles retrieved successfully', articles: articles });
+        res.status(200).json({ msg: 'Articles retrieved successfully', articlesInvi: articles });
     } catch (error) {
         console.error("Error while retrieving articles:", error);
         res.status(500).json({ msg: 'Internal server error' });
@@ -36,7 +35,7 @@ const GetArticlesVisible = async (req, res) => {
     try {
         const articles = await Article.find({ Visible: true });
         console.log("Retrieved articles:", articles);
-        res.status(200).json({ msg: 'Articles retrieved successfully', articles: articles });
+        res.status(200).json({ msg: 'Articles retrieved successfully', articlesVisib: articles });
     } catch (error) {
         console.error("Error while retrieving articles:", error);
         res.status(500).json({ msg: 'Internal server error' });
@@ -45,15 +44,14 @@ const GetArticlesVisible = async (req, res) => {
 const UpdateArticle = async (req, res) => {
     try {
         const ArticleId = req.params.id;
-        const updatedArticleData = req.body; // Les données mises à jour de l'article
-        console.log(updatedArticleData)
+        console.log(req.params.id)
+
+        const updatedArticleData = req.body;
         let photoPath = '';
         if (req.file) {
             photoPath = req.file.path;
-            // Ajoute le chemin de la nouvelle photo à l'objet de mise à jour
             updatedArticleData.photo = photoPath;
         }
-        console.log(updatedArticleData)
         await Article.findByIdAndUpdate(ArticleId, updatedArticleData);
         res.status(200).json({ message: 'Article updated successfully.' });
    } catch (error) {

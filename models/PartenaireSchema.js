@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const PartenaireSchema = new mongoose.Schema({
-    Statut: {
+    statut: {
         type: String,
         required: true
 
@@ -9,12 +9,12 @@ const PartenaireSchema = new mongoose.Schema({
     },
    
    
-    Photo: {
+    photo: {
         type: String,
         required: true
 
     },
-    Nom: {
+    nom: {
         type: String,
         required: true
 

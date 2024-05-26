@@ -2,21 +2,21 @@ const Vedios = require('../models/VedioSchema');
 
 const AddVedio = async (req, res) => {
     try {
-        const { Titre, Lien } = req.body;
+        const { titre, lien } = req.body;
         let photoPath = '';
         if (req.file) {
             photoPath = req.file.path;
         }
 
         // Check if the Titre field is present and not empty
-        if (!Titre || Titre.trim() === '') {
+        if (!titre || titre.trim() === '') {
             return res.status(400).json({ error: 'The Titre field is required' });
         }
 
         const video = await Vedios.create({
-            Titre,
-            Lien,
-            Photo: photoPath
+            titre,
+            lien,
+            images: photoPath
         });
 
         res.status(200).json({ video });
@@ -56,7 +56,7 @@ const UpdateVedio = async (req, res) => {
         if (req.file) {
             photoPath = req.file.path;
             // Ajoute le chemin de la nouvelle photo à l'objet de mise à jour
-            updatedVedioData.Photo = photoPath;
+            updatedVedioData.images = photoPath;
         }
         await Vedios.findByIdAndUpdate(VedioId, updatedVedioData);
         res.status(200).json({ message: 'Vedio updated successfully.' });

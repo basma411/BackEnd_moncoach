@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
   "/Partenaire",
-  upload.single("Photo"),
+  upload.single("photo"),
   adminAuthMiddleware,
   AddPartenaire
 );

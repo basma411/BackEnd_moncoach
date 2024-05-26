@@ -1,39 +1,39 @@
 const mongoose = require('mongoose');
 
 const EvenementsSchema = new mongoose.Schema({
-    Titre: {
+    titre: {
         type: String,
         required: true
 
 
     },
-    Texte: {
+    texte: {
         type: String,
         required: true
 
     },
-    Lien: {
+    lien: {
         type: String,
         required: true
 
     },
-    Lieu: {
+    lieu: {
         type: String,
         required: true
 
     },
-    Date: {
+    dates: {
         type: String,
         required: true
 
     },
-    Photo: {
+    photo: {
         type: String,
         required: true
 
     },
    
-    Visible: {
+    status: {
         type: Boolean,
         default: false
     }
