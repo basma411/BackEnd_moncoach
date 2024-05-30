@@ -14,7 +14,6 @@ const adminAuthMiddleware = async (req, res, next) => {
 
         // Vérifier si le token est valide
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-console.log(decodedToken)
         // Vérifier si l'utilisateur correspondant au token est un administrateur
         const admin = await Admin.findById(decodedToken.id);
 

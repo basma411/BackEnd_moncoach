@@ -193,30 +193,30 @@ const putCoach = async (req, res) => {
   }
 }
 
-const putCoachImage = async (req, res) => {
-  try {
-    const CoachId = req.params.id;
-    let photoPath = "";
-    const updateImage = req.body;
+// const putCoachImage = async (req, res) => {
+//   try {
+//     const CoachId = req.params.id;
+//     let photoPath = "";
+//     const updateImage = req.body;
 
-    if (req.files && req.files['imagee']) {
-      photoPath = req.files['imagee'][0].path;
-    }
+//     if (req.files && req.files['imagee']) {
+//       photoPath = req.files['imagee'][0].path;
+//     }
 
-    updateImage.Photo = photoPath;
+//     updateImage.Photo = photoPath;
 
-    const updatedCoach = await Coach.findByIdAndUpdate(CoachId, photoPath, { new: true });
+//     const updatedCoach = await Coach.findByIdAndUpdate(CoachId, photoPath, { new: true });
 
-    if (!updatedCoach) {
-      return res.status(404).json({ message: 'Coach not found.' });
-    }
+//     if (!updatedCoach) {
+//       return res.status(404).json({ message: 'Coach not found.' });
+//     }
 
-    return res.status(200).json({ message: 'Coach image updated successfully.', imagePath: photoPath });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-}
+//     return res.status(200).json({ message: 'Coach image updated successfully.', imagePath: photoPath });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// }
 
 const updateCoachCredentials = async (req, res) => {
   try {
@@ -304,4 +304,4 @@ const searchCoach = async (req, res) => {
 
 
 
-module.exports = { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials, putCoachImage ,searchCoach};
+module.exports = { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials ,searchCoach};

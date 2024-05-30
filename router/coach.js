@@ -26,11 +26,17 @@ router.post(
 router.post("/login", login);
 router.get("/getCoach", AutoCoach, getcoach);
 router.get("/coachesVisible", getCoachesVisible);
-router.get("/coachesInvisible", getCoachesInvisible);
+router.get("/coachesInvisible",adminAuthMiddleware, getCoachesInvisible);
 router.put(
   "/putcoach/:id",
   upload.fields([{ name: "imagee" }, { name: "logo" }, { name: "piece" }]),
   AutoCoach,
+  putCoach
+);
+router.put(
+  "/putcoachAdmin/:id",
+  upload.fields([{ name: "imagee" }, { name: "logo" }, { name: "piece" }]),
+  adminAuthMiddleware,
   putCoach
 );
 router.put('/coach/edit/:id',AutoCoach,upload.fields([{ name: "imagee" }, { name: "Logo" }, { name: "FichierPDF" }]),updateCoachCredentials)
