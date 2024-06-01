@@ -127,7 +127,7 @@ const getCoachesVisible = async (req, res) => {
   try {
     const coachesVisible = await Coach.find({ activ: true });
 
-    if (!coachesVisible || coachesVisible.length === 0) {
+    if (!coachesVisible ) {
       return res.status(404).json({ message: 'No coaches found.' });
     }
 
@@ -142,7 +142,7 @@ const getCoachesInvisible = async (req, res) => {
   try {
     const coachesInviseble = await Coach.find({ activ: false });
 
-    if (!coachesInviseble || coachesInviseble.length === 0) {
+    if (!coachesInviseble ) {
       return res.status(404).json({ message: 'No coaches found.' });
     }
 
