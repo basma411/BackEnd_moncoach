@@ -50,10 +50,10 @@ const PutEvenements = async (req, res) => {
         if (req.file) {
             photoPath = req.file.path;
             // Ajoute le chemin de la nouvelle photo à l'objet de mise à jour
-            UpdateEvenement.Photo = photoPath;
+            UpdateEvenement.photo = photoPath;
         }
 
-        console.log(UpdateEvenement);
+        console.log("UpdateEvenement",photoPath);
         
         await Evenements.findByIdAndUpdate(EvenementId, UpdateEvenement);
         res.status(200).json({ message: 'Evenement updated successfully.' });
