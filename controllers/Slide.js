@@ -35,8 +35,9 @@ const updateSlide  = async (req, res) => {
         let photoPath = '';
         if (req.file) {
             photoPath = req.file.path;
+            SlideUpdate.photo=photoPath
+
         }
-        SlideUpdate.photo=photoPath
         await Slides.findByIdAndUpdate(SlideID, SlideUpdate);
 
         res.status(201).json({ success: true, message: "Slide   updated successfully"});
