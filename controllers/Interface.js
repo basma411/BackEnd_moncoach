@@ -39,10 +39,11 @@ const updateInterface = async (req, res) => {
         if (req.file) {
             photoPath = req.file.path;
         }
-        const updatedInterface = req.body;
+        const updatedInterface ={ ...req.body };
         if (photoPath) {
             updatedInterface.image = photoPath;
         }
+        
         await Interface.findByIdAndUpdate(interfaceId, updatedInterface);
         res.status(200).json({ success: true, message: "Interface document updated successfully" });
     } catch (error) {

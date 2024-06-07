@@ -1,19 +1,24 @@
 const mongoose = require('mongoose');
 
 const BiblioSchema = new mongoose.Schema({
-    image: {
+    photo_c: {
         type: String,
         required: true
     },
-    texte: {
+    descrip: {
         type: String,
         required: true
     },
-    editeur: {
+    auteur1: {
         type: String,
         required: true
     },
-  
+    auteur2: {
+        type: String,
+    },
+    auteur3: {
+        type: String,
+    },
     annee: {
         type: String,
         required: true

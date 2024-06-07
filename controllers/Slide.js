@@ -10,7 +10,7 @@ const addSlide = async (req, res) => {
      const Slide=await Slides.create({
         titre1, titre2, photo :photoPath
      });
-
+console.log('req',req.body)
         res.status(201).json({ success: true, message: "slide ajoutée avec succès", Slide: Slide });
     } catch (err) {
         res.status(500).json({ success: false, message: "Erreur lors de l'ajout de la slide", error: err.message });
