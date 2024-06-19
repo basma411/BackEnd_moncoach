@@ -3,6 +3,7 @@ const JWT = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const Domaines = require("../models/DomaineSchema");
+const nodemailer = require("nodemailer");
 
 const registre = async (req, res) => {
   try {
@@ -193,30 +194,7 @@ const putCoach = async (req, res) => {
   }
 }
 
-// const putCoachImage = async (req, res) => {
-//   try {
-//     const CoachId = req.params.id;
-//     let photoPath = "";
-//     const updateImage = req.body;
 
-//     if (req.files && req.files['imagee']) {
-//       photoPath = req.files['imagee'][0].path;
-//     }
-
-//     updateImage.Photo = photoPath;
-
-//     const updatedCoach = await Coach.findByIdAndUpdate(CoachId, photoPath, { new: true });
-
-//     if (!updatedCoach) {
-//       return res.status(404).json({ message: 'Coach not found.' });
-//     }
-
-//     return res.status(200).json({ message: 'Coach image updated successfully.', imagePath: photoPath });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal Server Error' });
-//   }
-// }
 
 const updateCoachCredentials = async (req, res) => {
   try {
@@ -262,7 +240,6 @@ const updateCoachCredentials = async (req, res) => {
 };
 
 
-
 const deleteCoach = async (req, res) => {
   try {
     const coachId = req.params.id;
@@ -300,8 +277,43 @@ const searchCoach = async (req, res) => {
     res.status(500).json({ message: 'Erreur interne du serveur.' });
   }
 };
+const sendCoach = async (req, res) => {
+  try {
+    // Récupérer les données du corps de la requête
+    const { email, message, subject } = req.body;
+
+    // Configuration de Nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'sabkhibasma1@gmail.com', // Votre adresse email
+        pass: 'tkcb mzjy czxa slmb'   // Votre mot de passe email
+      }
+    });
+
+    // Options de l'email
+    const mailOptions = {
+      from: 'sabkhibasma1@gmail.com', // L'adresse email de l'expéditeur
+      to: email,   // Tableau d'adresses email des destinataires
+      subject: subject,
+      text: message
+    };
+
+    // Envoyer l'email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: error.toString() });
+      }
+      res.status(201).json({ success: true, message: "Email envoyé avec succès" });
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: err.message });
+  }
+};
 
 
 
 
-module.exports = { registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials ,searchCoach};
+
+
+module.exports = { sendCoach,registre, login, getcoach, putCoach, deleteCoach, getCoachesInvisible, getCoachesVisible, updateCoachCredentials ,searchCoach};

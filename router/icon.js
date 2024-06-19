@@ -1,5 +1,5 @@
 const express = require("express");
-const { addIcon, getIcon, updateIcon, updateicon } = require("../controllers/Icon");
+const { addIcon, getIcon, updateicon } = require("../controllers/Icon");
 const { upload } = require("../middlewares/upload");
 const adminAuthMiddleware = require("../middlewares/AutoAdmin");
 

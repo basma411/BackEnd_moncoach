@@ -12,6 +12,8 @@ const mongoose = require('mongoose');
 
 const RouterCoach=require('./router/coach')
 app.use('/api',RouterCoach)
+const RouterAtelier = require('./router/atelier');
+app.use('/api', RouterAtelier);
 
 const RouterArticle=require('./router/article')
 app.use('/api',RouterArticle)
@@ -42,6 +44,8 @@ const RouterPubAtelier=require('./router/PubAtelier')
 app.use('/api',RouterPubAtelier)
 const RouterInterface=require('./router/Interface')
 app.use('/api',RouterInterface)
+const RouterFaq=require('./router/Faq')
+app.use('/api',RouterFaq)
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

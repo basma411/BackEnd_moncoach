@@ -30,8 +30,15 @@ const getIcon = async (req, res) => {
 const updateicon = async (req, res) => {
     try {
         const IconID = req.params.id;
-        const IconUpdate = req.body;
-        await Icon.findByIdAndUpdate(IconID, IconUpdate);
+        const iconUpdate= req.body;
+        console.log("IconID",IconID)
+
+        console.log("icon",iconUpdate)
+        if (!iconUpdate) {
+            return res.status(404).json({ success: false, message: "Icon not found" });
+        }
+        await Icon.findByIdAndUpdate(IconID, iconUpdate,  { new: true, runValidators: true }
+        );
 
         res.status(201).json({ success: true, message: "Icon updated successfully" }); // Correction du message
     } catch (error) { // Utilisation de 'error' au lieu de 'err'
