@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/pub-ateliers/:id',upload.single('img'),adminAuthMiddleware, addPubAtelier);
 
 // Route for getting all pub ateliers
-router.get('/pub-ateliers/get/:id',adminAuthMiddleware, getPubAteliers);
+router.get('/pub-ateliers/get', getPubAteliers);
 
 // Route for updating a pub atelier
 router.put('/pub-ateliers/:id',adminAuthMiddleware, updatePubAtelier);

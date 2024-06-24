@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const atelier2Schema = new mongoose.Schema({
-    nom : {
+    nom: {
         type: String,
         required: true
     },
@@ -12,32 +12,28 @@ const atelier2Schema = new mongoose.Schema({
     tel: {
         type: String,
         required: true
-
-    }
-    ,
+    },
     mail: {
         type: String,
         required: true
-
-    }
-    ,
+    },
     entreprise: {
         type: String,
-        required: true
-
-    }
-    ,
+        required: true,
+        enum:["Entreprise","Coach"]
+    },
     poste: {
         type: String,
         required: true
-
     },
     proposition: {
         type: String,
         required: true
-
+    },
+    ouner:{type:mongoose.Schema.Types.ObjectId,
+        ref:'Atelier'
     }
 });
 
-const PubAteliers = mongoose.model('atelier2', atelier2Schema);
-module.exports = PubAteliers;
+const Atelier2 = mongoose.model('atelier2', atelier2Schema);
+module.exports = Atelier2;

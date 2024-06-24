@@ -25,7 +25,7 @@ const AddAdmin = async (req, res) => {
                     id: admin._id,
                 },
                 process.env.JWT_secret,
-                { expiresIn: "7D" }
+                // { expiresIn: "7D" }
             );
 
             res.status(200).json({ msg: admin, token });

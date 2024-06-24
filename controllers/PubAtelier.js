@@ -27,7 +27,9 @@ const getPubAteliers = async (req, res) => {
     try {
                 const atelierId = req.params.id;
 
-        const pubAteliers = await PubAteliers.find({ouner:atelierId});
+        const pubAteliers = await PubAteliers.find();
+        // const pubAteliers = await PubAteliers.find({ouner:atelierId});
+
         res.status(200).json({ success: true, message: "Publications d'ateliers récupérées avec succès", PubAteliers: pubAteliers });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de la récupération des publications d'ateliers", error: error.message });
