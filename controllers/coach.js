@@ -277,6 +277,7 @@ const searchCoach = async (req, res) => {
     res.status(500).json({ message: 'Erreur interne du serveur.' });
   }
 };
+
 const sendCoach = async (req, res) => {
   try {
     // Récupérer les données du corps de la requête
@@ -286,17 +287,17 @@ const sendCoach = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'sabkhibasma1@gmail.com', // Votre adresse email
-        pass: 'tkcb mzjy czxa slmb'   // Votre mot de passe email
+        user: 'sabkhibasma1@gmail.com', 
+        pass: 'tkcb mzjy czxa slmb'  
       }
     });
 
     // Options de l'email
     const mailOptions = {
-      from: 'sabkhibasma1@gmail.com', // L'adresse email de l'expéditeur
-      to: email,   // Tableau d'adresses email des destinataires
+      from: 'sabkhibasma1@gmail.com', 
+      to: email,  
       subject: subject,
-      text: message
+      html: message  
     };
 
     // Envoyer l'email
@@ -310,6 +311,7 @@ const sendCoach = async (req, res) => {
     res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: err.message });
   }
 };
+
 
 
 
