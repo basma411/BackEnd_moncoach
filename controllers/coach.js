@@ -75,7 +75,7 @@ if (!domain || domain.length === 0) {
 
         const token = await JWT.sign({ id: coachcreate._id }, process.env.JWT_secret, { expiresIn: "7D" });
 
-        res.status(200).json({ msg: coachcreate, token: token });
+        res.status(200).json({ msg: "successfully", token: token });
       }
     }
   } catch (error) {
