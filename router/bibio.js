@@ -16,6 +16,6 @@ router.post('/add-biblios', upload.single('image'), addBiblio);
 router.get('/get-biblios', getBiblios);
 
 // Route for updating a bibliography entry with file upload
-router.put('/put-biblios/:id',adminAuthMiddleware, upload.single('image'), updateBiblio);
+router.put('/put-biblios/:id', adminAuthMiddleware, upload.single("photo_c"), updateBiblio);
 
 module.exports = router;

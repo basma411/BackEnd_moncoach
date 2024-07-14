@@ -31,18 +31,16 @@ const getBiblios = async (req, res) => {
     }
 };
 
-// Controller function to update a bibliography entry
 const updateBiblio = async (req, res) => {
     try {
         const biblioId = req.params.id;
-        let photoPath = '';
-        if (req.file) {
-            photoPath = req.file.path;
-        }
         const updatedBiblio = { ...req.body };
-        if (photoPath) {
-            updatedBiblio.image = photoPath;
+
+        // Vérifie si une nouvelle photo a été téléchargée et met à jour le chemin du fichier
+        if (req.file) {
+            updatedBiblio.photo_c = req.file.path;
         }
+
         await Biblio.findByIdAndUpdate(biblioId, updatedBiblio);
         res.status(200).json({ success: true, message: "Bibliography entry updated successfully" });
     } catch (error) {
