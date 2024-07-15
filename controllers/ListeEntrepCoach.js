@@ -38,19 +38,19 @@ const getList = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+  const DeleteAtelier = async (req, res) => {
+    try {
+        const AtelierId = req.params.id;
+        const atelier = await Atelier2.findByIdAndDelete(AtelierId);
 
-// const deletePartenaire = async (req, res) => {
-//     try {
-//         const { id } = req.params; 
-//         const deletedPartenaire = await Partenaires.findByIdAndDelete(id);
-        
-//         if (!deletedPartenaire) {
-//             return res.status(404).json({ message: "Partenaire not found" });
-//         }
+        if (!atelier) {
+            return res.status(404).json({ msg: 'Atelier not found' });
+        }
 
-//         res.status(200).json({ message: "Partenaire deleted successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// }
-module.exports = { AddList,getList };
+        res.status(200).json({ msg: 'Atelier deleted successfully' });
+    } catch (error) {
+        console.error("Error while deleting atelier:", error);
+        res.status(500).json({ msg: 'Internal server error' });
+    }
+};
+module.exports = { AddList,getList,DeleteAtelier };

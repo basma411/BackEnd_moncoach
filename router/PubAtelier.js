@@ -15,7 +15,7 @@ router.get('/pub-ateliers/get', getPubAteliers);
 router.put('/pub-ateliers/:id',adminAuthMiddleware, updatePubAtelier);
 
 // Route for deleting a pub atelier
-router.delete('/pub-ateliers/:id',adminAuthMiddleware, deletePubAtelier);
+router.delete('/pub/delete/:id',adminAuthMiddleware, deletePubAtelier);
 
 module.exports = router;
 
