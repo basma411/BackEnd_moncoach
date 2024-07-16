@@ -42,11 +42,7 @@ const updatePubAtelier = async (req, res) => {
         const pubAtelierId = req.params.id;
 
         const updatedPubAtelier = req.body;
-        let photoPath = '';
-        if (req.file) {
-            photoPath = req.file.path;
-        }
-        updatedPubAtelier.img=photoPath
+      
         await PubAteliers.findByIdAndUpdate(pubAtelierId, updatedPubAtelier);
         res.status(200).json({ success: true, message: "Publication d'atelier mise à jour avec succès" });
     } catch (error) {

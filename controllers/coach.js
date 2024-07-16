@@ -283,22 +283,26 @@ const sendCoach = async (req, res) => {
     // Récupérer les données du corps de la requête
     const { email, message, subject } = req.body;
 
-    // Configuration de Nodemailer
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'sabkhibasma1@gmail.com', 
-        pass: 'tkcb mzjy czxa slmb'  
-      }
+       // Configuration de Nodemailer
+       const transporter = nodemailer.createTransport({
+        host: 'ssl0.ovh.net',
+        port: 587,
+        auth: {
+            user: 'sendcon@moncoach.tn', // Adresse email ou identifiant SMTP
+            pass: 'yassine123456'   // Mot de passe associé
+        }
     });
+    
 
     // Options de l'email
     const mailOptions = {
-      from: 'sabkhibasma1@gmail.com', 
-      to: email,  
-      subject: subject,
-      html: message  
-    };
+        from: '	contact@moncoach.tn', // L'adresse email de l'expéditeur
+        to: email,
+        subject:  subject,
+        html: `
+        <div>${message}</div>
+   
+    `        };
 
     // Envoyer l'email
     transporter.sendMail(mailOptions, (error, info) => {

@@ -13,20 +13,24 @@ const AddContact = async (req, res) => {
 
         // Configuration de Nodemailer
         const transporter = nodemailer.createTransport({
-            service: 'gmail', // Utilisez le service de votre choix
+            host: 'ssl0.ovh.net',
+            port: 587,
             auth: {
-                user: 'sabkhibasma1@gmail.com', // Votre adresse email
-                pass: 'tkcb mzjy czxa slmb'   // Votre mot de passe email
+                user: 'sendcon@moncoach.tn', // Adresse email ou identifiant SMTP
+                pass: 'yassine123456'   // Mot de passe associé
             }
         });
+        
 
         // Options de l'email
         const mailOptions = {
-            from: email, // L'adresse email de l'expéditeur
-            to: "contact@moncoach.tn",
-            subject: `New Contact from ${nom_prenom}`,
-            text: `Name: ${nom_prenom}\nPhone: ${tel}\nEmail: ${email}\nMessage: ${mssg}`
-        };
+            from: '	contact@moncoach.tn', // L'adresse email de l'expéditeur
+            to: "sabkhi.basma89@gmail.com",
+            subject:  'Nouveau Contact',
+            html: `
+            <p>Un nouveau contact a été ajouté !</p>:<link>http://localhost:3000/admin/Contact</link>
+       
+        `        };
 
         // Envoyer l'email
         transporter.sendMail(mailOptions, (error, info) => {

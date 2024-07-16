@@ -31,9 +31,7 @@ const updateicon = async (req, res) => {
     try {
         const IconID = req.params.id;
         const iconUpdate= req.body;
-        console.log("IconID",IconID)
-
-        console.log("icon",iconUpdate)
+   
         if (!iconUpdate) {
             return res.status(404).json({ success: false, message: "Icon not found" });
         }

@@ -12,7 +12,7 @@ router.post('/pub-ateliers/:id',upload.single('img'),adminAuthMiddleware, addPub
 router.get('/pub-ateliers/get', getPubAteliers);
 
 // Route for updating a pub atelier
-router.put('/pub-ateliers/:id',adminAuthMiddleware, updatePubAtelier);
+router.put('/pub-ateliers/put/:id',adminAuthMiddleware, updatePubAtelier);
 
 // Route for deleting a pub atelier
 router.delete('/pub/delete/:id',adminAuthMiddleware, deletePubAtelier);
