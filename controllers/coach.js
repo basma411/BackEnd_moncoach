@@ -10,79 +10,114 @@ const registre = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.status(400).json({ error: errors.array() });
+      return res.status(400).json({ error: errors.array() });
+    }
+
+    const {
+      nom, domain, AutreDomaine, gouv, num, email, pwd, ConfirmPassword, bio, method, langue, type_client, tarif, site, yt, In, fb, piece,
+    } = req.body;
+    if (!nom) {
+      return res.status(400).json({ msg: "Erreur lors de l'ajout du coach" });
+    }
+    if (!domain || domain.length === 0) {
+      return res.status(400).json({ msg: "Veuillez sélectionner au moins un domaine d'intervention." });
+    }
+    if (!gouv ) {
+      return res.status(400).json({ msg: "Veuillez sélectionner  un Gouvernorat." });
+    }
+    if (pwd !== ConfirmPassword) {
+      return res.status(400).json({ msg: "Password and confirmation password do not match." });
+    }
+    if (!num || num.length <= 8) {
+      console.log(num.length)
+
+      return res.status(400).json({ msg: "Le numero doit avoir 8 chiffres !" });
+    }
+    
+    let pdfPath = "";
+    let photoPath = "";
+    let logoPath = "";
+
+    if (req.files) {
+      if (req.files["imagee"] && (req.files["imagee"][0].mimetype === "image/png" || req.files["imagee"][0].mimetype === "image/jpeg")) {
+        photoPath = req.files["imagee"][0].path;
+      }
+
+      if (req.files["logo"] && (req.files["logo"][0].mimetype === "image/png" || req.files["logo"][0].mimetype === "image/jpeg")) {
+        logoPath = req.files["logo"][0].path;
+      }
+
+      if (req.files["piece"] && req.files["piece"][0].mimetype === "application/pdf") {
+        pdfPath = req.files["piece"][0].path;
+      }
+    }
+
+    const coachexist = await Coach.findOne({ email });
+
+    if (coachexist) {
+      return res.status(400).json({ msg: "This email already exists." });
     } else {
-      const {
-        nom, domain, AutreDomaine, gouv, num, email, pwd, ConfirmPassword, bio, method, langue, type_client, tarif, site, yt, In, fb, piece,
-      } = req.body;
-if (!domain || domain.length === 0) {
-  return res.status(400).json({ msg: "Veuillez sélectionner au moins un domaine d'intervention." });
-}
-      if (pwd !== ConfirmPassword) {
-        res.status(400).json({ msg: "Password and confirmation password do not match." });
+      // Convert domain to an array if it's a string
+      const domainI = Array.isArray(domain) ? domain : domain.split(",").map((domaine) => domaine.trim());
+
+      const domainesPromises = domainI.map(async (domaineName) => {
+        const domaine = await Domaines.findOne({ domaines: domaineName });
+        return domaine;
+      });
+
+      const domaines = await Promise.all(domainesPromises);
+
+      if (domaines.some((domaine) => !domaine)) {
+        return res.status(400).json({ msg: "One or more domains not found." });
       }
 
-      let pdfPath = "";
-      let photoPath = "";
-      let logoPath = "";
+      const domaineNom = domaines.map((domaine) => domaine.domaines);
 
-      if (req.files) {
-        if (req.files["imagee"] && (req.files["imagee"][0].mimetype === "image/png" || req.files["imagee"][0].mimetype === "image/jpeg")) {
-          photoPath = req.files["imagee"][0].path;
+      const decryPaswoerd = await bcrypt.hash(pwd, 10);
+      const MethDeCoach = method.split(",").map((value) => value.trim());
+      const Lang = langue.split(",").map((value) => value.trim());
+      const Types = type_client.split(",").map((value) => value.trim());
+
+      const coachcreate = await Coach.create({
+        nom, domain: domaineNom, AutreDomaine, gouv, num, email, pwd: decryPaswoerd, bio, method: MethDeCoach, langue: Lang, type_client: Types, tarif, image: photoPath,
+        site, logo: logoPath, yt, In, fb, piece: pdfPath
+      });
+
+      const token = await JWT.sign({ id: coachcreate._id }, process.env.JWT_secret, { expiresIn: "7D" });
+
+      // Configuration of Nodemailer
+      const transporter = nodemailer.createTransport({
+        host: 'ssl0.ovh.net',
+        port: 587,
+        auth: {
+          user: 'sendcon@moncoach.tn', // SMTP username
+          pass: 'yassine123456' // SMTP password
         }
+      });
 
-        if (req.files["logo"] && (req.files["logo"][0].mimetype === "image/png" || req.files["logo"][0].mimetype === "image/jpeg")) {
-          logoPath = req.files["logo"][0].path;
+      // Email options
+      const mailOptions = {
+        from: 'contact@moncoach.tn', // Sender email address
+        to: "sabkhi.basma89@gmail.com",
+        subject: 'Nouveau coach',
+        html: `<p>Un nouveau coach a été ajouté !</p><a href="http://localhost:3000/admin/Coachs/invisible">Voir les détails</a>`
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: error.toString() });
         }
+      });
 
-        if (req.files["piece"] && req.files["piece"][0].mimetype === "application/pdf") {
-          pdfPath = req.files["piece"][0].path;
-        }
-      }
-
-      const coachexist = await Coach.findOne({ email });
-
-      if (coachexist) {
-        res.status(400).json({ msg: "This email already exists." });
-      } else {
-   // Si DomainesIntervention est une chaîne, convertissez-la en tableau
-   const domainI = Array.isArray(domain)
-   ? domain
-   : domain.split(",").map((domaine) => domaine.trim());    
-   
-   const domainesPromises = domainI.map(async (domaineName) => {
-          const domaine = await Domaines.findOne({ domaines: domaineName });
-          return domaine;
-        });
-
-        const domaines = await Promise.all(domainesPromises);
-
-        if (domaines.some((domaine) => !domaine)) {
-          res.status(400).json({ msg: "One or more domains not found." });
-        }
-
-        const domaineNom = domaines.map((domaine) => domaine.domaines);
-
-        const decryPaswoerd = await bcrypt.hash(pwd, 10);
-        const MethDeCoach = method.split(",").map((value) => value.trim());
-        const Lang = langue.split(",").map((value) => value.trim());
-        const Types = type_client.split(",").map((value) => value.trim());
-
-        const coachcreate = await Coach.create({
-          nom, domain:domaineNom, AutreDomaine, gouv, num, email, pwd: decryPaswoerd, bio, method: MethDeCoach, langue: Lang, type_client: Types, tarif, image: photoPath,
-          site, logo: logoPath, yt, In, fb, piece:pdfPath
-        });
-
-        const token = await JWT.sign({ id: coachcreate._id }, process.env.JWT_secret, { expiresIn: "7D" });
-
-        res.status(200).json({ msg: "successfully", token: token });
-      }
+      res.status(200).json({ msg: "successfully", token: token });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "An error occurred while registering the coach." });
   }
 };
+
 
 const login = async (req, res) => {
   try {
