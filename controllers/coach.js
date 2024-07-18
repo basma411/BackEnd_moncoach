@@ -28,7 +28,7 @@ const registre = async (req, res) => {
     if (pwd !== ConfirmPassword) {
       return res.status(400).json({ msg: "Password and confirmation password do not match." });
     }
-    if (!num || num.length <= 8) {
+    if (!num || num.length < 8) {
       console.log(num.length)
 
       return res.status(400).json({ msg: "Le numero doit avoir 8 chiffres !" });
@@ -98,7 +98,7 @@ const registre = async (req, res) => {
       // Email options
       const mailOptions = {
         from: 'contact@moncoach.tn', // Sender email address
-        to: "sabkhi.basma89@gmail.com",
+        to: "	contact@moncoach.tn",
         subject: 'Nouveau coach',
         html: `<p>Un nouveau coach a été ajouté !</p><a href="http://localhost:3000/admin/Coachs/invisible">Voir les détails</a>`
       };

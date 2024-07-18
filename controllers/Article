@@ -1,4 +1,5 @@
 const Article = require('../models/ArticlSchema');
+const nodemailer = require("nodemailer");
 
 const AddArticle = async (req, res) => {
     try {
@@ -13,6 +14,30 @@ const AddArticle = async (req, res) => {
         const article = await Article.create({
             auteur, titre, texte, photo: photoPath, lien
         });
+       // Configuration of Nodemailer
+       const transporter = nodemailer.createTransport({
+        host: 'ssl0.ovh.net',
+        port: 587,
+        auth: {
+          user: 'sendcon@moncoach.tn', // SMTP username
+          pass: 'yassine123456' // SMTP password
+        }
+      });
+
+      // Email options
+      const mailOptions = {
+        from: 'contact@moncoach.tn', // Sender email address
+        to: "contact@moncoach.tn",
+        subject: 'Nouveau article',
+        html: `<p>Un nouveau article a été ajouté !</p><a href="http://localhost:3000/admin/artcle/invisible">Voir les détails</a>`
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: error.toString() });
+        }
+      });
 
         res.status(200).json({ article });
 

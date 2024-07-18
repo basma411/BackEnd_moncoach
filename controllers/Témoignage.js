@@ -1,4 +1,5 @@
 const Témoignages = require('../models/TémoignageSchema');
+const nodemailer = require("nodemailer");
 
 const addTemoignage = async (req, res) => {
     try {
@@ -6,6 +7,30 @@ const addTemoignage = async (req, res) => {
         const Témoignage = await Témoignages.create({
             nom, texte 
          });
+             // Configuration of Nodemailer
+      const transporter = nodemailer.createTransport({
+        host: 'ssl0.ovh.net',
+        port: 587,
+        auth: {
+          user: 'sendcon@moncoach.tn', // SMTP username
+          pass: 'yassine123456' // SMTP password
+        }
+      });
+
+      // Email options
+      const mailOptions = {
+        from: 'contact@moncoach.tn', // Sender email address
+        to: "contact@moncoach.tn",
+        subject: 'Nouveau Temoignege',
+        html: `<p>Un nouveau temoignege a été ajouté !</p>`
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: error.toString() });
+        }
+      });
         res.status(201).json({ success: true, message: "Témoignage ajouté avec succès", Témoignage: Témoignage });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de l'ajout du témoignage", error: error.message });

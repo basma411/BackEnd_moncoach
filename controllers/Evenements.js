@@ -1,5 +1,7 @@
 const Evenements  = require("../models/EvenementsSchema");
 const { validationResult } = require("express-validator");
+const nodemailer = require("nodemailer");
+
 const AddEvenements = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -21,6 +23,30 @@ const AddEvenements = async (req, res) => {
                 dates,
                 photo: photoPath
             });
+                         // Configuration of Nodemailer
+      const transporter = nodemailer.createTransport({
+        host: 'ssl0.ovh.net',
+        port: 587,
+        auth: {
+          user: 'sendcon@moncoach.tn', // SMTP username
+          pass: 'yassine123456' // SMTP password
+        }
+      });
+
+      // Email options
+      const mailOptions = {
+        from: 'contact@moncoach.tn', // Sender email address
+        to: "contact@moncoach.tn",
+        subject: 'Nouveau Evenement',
+        html: `<p>Un nouveau évenement a été ajouté !</p>`
+      };
+
+      // Send email
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: "Erreur lors de l'envoi de l'email", error: error.toString() });
+        }
+      });
             res.status(200).json({ evenement });
         }
     } catch (error) {
