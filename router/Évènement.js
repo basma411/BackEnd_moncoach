@@ -5,6 +5,9 @@ const {
   GetEvenements,
   PutEvenements,
   deleteEvenements,
+  getEvenementById,
+  opengraph,
+  
 } = require("../controllers/Evenements");
 const adminAuthMiddleware = require("../middlewares/AutoAdmin");
 const router = express.Router();
@@ -18,5 +21,6 @@ router.put(
   PutEvenements
 );
 router.delete("/Evenements/delete/:id", deleteEvenements);
+router.get('/Events/:id',opengraph);
 
 module.exports = router;

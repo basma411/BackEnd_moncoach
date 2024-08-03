@@ -323,15 +323,15 @@ const sendCoach = async (req, res) => {
         host: 'ssl0.ovh.net',
         port: 587,
         auth: {
-            user: 'sendcon@moncoach.tn', // Adresse email ou identifiant SMTP
-            pass: 'yassine123456'   // Mot de passe associé
+            user: 'sendcon@moncoach.tn', 
+            pass: 'yassine123456'  
         }
     });
     
 
     // Options de l'email
     const mailOptions = {
-        from: '	contact@moncoach.tn', // L'adresse email de l'expéditeur
+        from: 'contact@moncoach.tn',
         to: email,
         subject:  subject,
         html: `
