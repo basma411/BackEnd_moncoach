@@ -101,27 +101,8 @@ const deleteEvenements = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
-const opengraph= async (req, res) => {
-    const eventId = req.params.id;
 
-    try {
-        const event = await Evenements.findById(eventId);
-        const ogTitle = event ? event.titre : "Default Event Title";
-        const ogDescription = event ? event.texte : "Default Event Description";
-        const ogImage = event ? event.photo : "http://localhost:8000/upload/images/default.png";
-        const shareUrl = `https://880c-197-238-127-185.ngrok-free.app /Evenement/${eventId}`;
-        console.log(ogTitle)
 
-        res.render('event', {
-            ogTitle,
-            ogDescription,
-            ogImage,
-            shareUrl
-        });
-    } catch (error) {
-        res.status(500).send("Error retrieving event");
-    }
-}
 
   
-module.exports = { AddEvenements ,GetEvenements,PutEvenements,deleteEvenements,opengraph};
+module.exports = { AddEvenements ,GetEvenements,PutEvenements,deleteEvenements};

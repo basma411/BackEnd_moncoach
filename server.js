@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 
 dotenv.config({ path: "./config/.env" });
 
@@ -12,10 +13,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/upload', express.static('upload'));
-
-// Set up EJS as the templating engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -80,14 +77,56 @@ const RouterFaq = require('./router/Faq');
 app.use('/api', RouterFaq);
 
 const RouterList = require('./router/ListeEntrepCoach');
+const Evenements = require('./models/EvenementsSchema');
 app.use('/api', RouterList);
 
-// Event model
-const Evenements = require("./models/EvenementsSchema");
+// Example: Dynamic route for social media sharing
+app.get('/Evenement/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const event = await Evenements.findById(id);
 
-// Event Route to Render EJS Template with Open Graph Meta Tags
-const { opengraph } = require('./controllers/Evenements');
-app.get('/Events/:id', opengraph);
+        if (!event) {
+            return res.status(404).send('Event not found');
+        }
+
+        const filePath = path.resolve(__dirname, '..', 'client', 'build', 'index.html');
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                return console.error(err);
+            }
+
+            // Replace placeholders with event data
+            data = data.replace(/\$OG_TITLE/g, event.titre);
+            data = data.replace(/\$OG_IMAGE/g, `https://ce28-197-15-129-6.ngrok-free.app/${event.photo}`);
+            data = data.replace(/\$OG_URL/g, `http://localhost:3000/Evenement/${event._id}`);
+            res.send(data);
+        });
+    } catch (err) {
+        console.error('Error fetching event:', err);
+        res.status(500).send('Server error');
+    }
+});
+
+// Serve the React app
+app.use(express.static(path.resolve(__dirname, '..', 'client', 'build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return console.error(err);
+        }
+
+        // Replace placeholders with event data
+        data = data.replace(/\$OG_TITLE/g, "MonCoach");
+        data = data.replace(/\$OG_DESCRIPTION/g, " ");
+        data = data.replace(/\$OG_IMAGE/g, "http://www.moncoach.tn/images/logoo.png");
+        data = data.replace(/\$OG_URL/g, `http://localhost:3000`);
+
+        res.send(data);
+    });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;

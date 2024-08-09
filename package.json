@@ -4,6 +4,7 @@
     "body-parser": "^1.20.2",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
+    "dompurify": "^3.1.6",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
@@ -15,6 +16,7 @@
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
     "react-select": "^5.8.0",
+    "sanitize-html": "^2.13.0",
     "sequelize": "^6.37.3"
   },
   "scripts": {
